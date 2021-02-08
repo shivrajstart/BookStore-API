@@ -16,6 +16,28 @@
             </summary>
             <returns>List of Authors</returns>
         </member>
+        <member name="M:BookStore_API.Controllers.AuthorsController.GetAuthor(System.Int32)">
+            <summary>
+            Gets the author by Id
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns>An Authors's record</returns>
+        </member>
+        <member name="M:BookStore_API.Controllers.AuthorsController.Create(BookStore_API.DTOs.AuthorCreateDTO)">
+            <summary>
+            Creates the specified author dto.
+            </summary>
+            <param name="authorDTO">The author dto.</param>
+            <returns></returns>
+        </member>
+        <member name="M:BookStore_API.Controllers.AuthorsController.Update(System.Int32,BookStore_API.DTOs.AuthorUpdateDTO)">
+            <summary>
+            Updates the specified author details.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="authorDTO">The author dto.</param>
+            <returns></returns>
+        </member>
         <member name="T:BookStore_API.Controllers.HomeController">
             <summary>
             This is Test API Controller
