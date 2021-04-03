@@ -33,11 +33,40 @@ namespace BookStore_API.Controllers
             _config = configuration;
         }
 
+        [Route("register")]
+        [HttpPost]
+        public async Task<IActionResult> Register([FromBody] UserDTO userDTO)
+        {
+            var location = GetControllerActionNames();
+            try
+            {
+                var username = userDTO.EmailAddress;
+                var password = userDTO.Password;
+                _logger.LogInfo($"{location}: Registration attempt for {username}");
+                var user = new IdentityUser { Email = username, UserName = username };
+                var result = await _userManager.CreateAsync(user, password);
+                if (!result.Succeeded)
+                {
+                    foreach(var error in result.Errors)
+                    {
+                        _logger.LogError($"{location}: {error.Code} {error.Description}");
+                    }
+                    return InternalError($"{location}: {username} User Resgistration Attempt failed");
+                }
+                return Ok(new { result.Succeeded});
+            }
+            catch (Exception ex)
+            {
+                return InternalError($"{location}: {ex.Message} - {ex.InnerException}");
+            }
+        }
+
         /// <summary>
         /// User login endpoint
         /// </summary>
         /// <param name="userDTO">The user dto.</param>
         /// <returns></returns>
+        [Route("login")]
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] UserDTO userDTO) 
@@ -45,7 +74,7 @@ namespace BookStore_API.Controllers
             var location = GetControllerActionNames();
             try
             {
-                var username = userDTO.UserName;
+                var username = userDTO.EmailAddress;
                 var password = userDTO.Password;
                 _logger.LogInfo($"{location}: Login attempt from user {username}");
                 var result = await _signInManager.PasswordSignInAsync(username, password, false, false);
